@@ -74,6 +74,7 @@ void Streamer::startAutomaticUpdate()
 			if (!core->getData()->players.empty())
 			{
 				streamPickups();
+				streamActors();
 			}
 			executeCallbacks();
 
@@ -223,6 +224,14 @@ void Streamer::performPlayerUpdate(Player &player, bool automatic)
 					if (automatic && !core->getData()->pickups.empty() && (player.enabledItems[STREAMER_TYPE_PICKUP]))
 					{
 						discoverPickups(player, cells);
+					}
+					break;
+				}
+				case STREAMER_TYPE_ACTOR:
+				{
+					if (automatic && !core->getData()->pickups.empty() && (player.enabledItems[STREAMER_TYPE_ACTOR]))
+					{
+						discoverActors(player, cells);
 					}
 					break;
 				}
@@ -821,7 +830,7 @@ void Streamer::processObjects(Player &player, const std::vector<SharedCell> &cel
 		for (std::unordered_map<int, Item::SharedObject>::const_iterator o = (*c)->objects.begin(); o != (*c)->objects.end(); ++o)
 		{
 			float distance = std::numeric_limits<float>::infinity();
-			if (std::abs(player.position[2] - o->second->position[2]) < 400.0 && doesPlayerSatisfyConditions(o->second->players, player.playerId, o->second->interiors, player.interiorId, o->second->attach ? o->second->attach->worlds : o->second->worlds, player.worldId, o->second->areas, player.internalAreas, o->second->inverseAreaChecking))
+			if (std::abs(player.position[2] - o->second->position[2]) < 500.0 && doesPlayerSatisfyConditions(o->second->players, player.playerId, o->second->interiors, player.interiorId, o->second->attach ? o->second->attach->worlds : o->second->worlds, player.worldId, o->second->areas, player.internalAreas, o->second->inverseAreaChecking))
 			{
 				if (o->second->comparableStreamDistance < STREAMER_STATIC_DISTANCE_CUTOFF)
 				{
