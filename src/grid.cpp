@@ -210,6 +210,7 @@ void Grid::rebuildGrid()
 	cells.clear();
 	globalCell = std::make_shared<Cell>();
 	calculateTranslationMatrix();
+
 	for (std::unordered_map<int, Item::SharedActor>::iterator a = core->getData()->actors.begin(); a != core->getData()->actors.end(); ++a)
 	{
 		addActor(a->second);

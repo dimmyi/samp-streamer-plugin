@@ -34,7 +34,15 @@ Player::Player(int id)
 	delayedCheckpoint = 0;
 	delayedRaceCheckpoint = 0;
 	delayedUpdate = false;
+	shotObjects = 1;
 	delayedUpdateType = 0;
+	selectObject = INVALID_OBJECT_ID;
+	
+    for (int i = 0; i < MAX_OBJECTS; ++i) {
+		playerObjectsIndex[i] = 0;
+		playerObjectShootable[i] = 0;
+    }
+
 	if (!sampgdk::IsPlayerNPC(id))
 	{
 		enabledItems.set();

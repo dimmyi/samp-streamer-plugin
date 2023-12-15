@@ -952,6 +952,7 @@ cell AMX_NATIVE_CALL Natives::Streamer_DestroyAllVisibleItems(AMX *amx, cell *pa
 					std::unordered_map<int, Item::SharedObject>::iterator o = core->getData()->objects.find(i->first);
 					if (serverWide || (o != core->getData()->objects.end() && o->second->amx == amx))
 					{
+						p->second.playerObjectsIndex[i->second] = 0;
 						sampgdk::DestroyPlayerObject(p->first, i->second);
 						i = p->second.internalObjects.erase(i);
 					}

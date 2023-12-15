@@ -22,7 +22,7 @@
 
 cell AMX_NATIVE_CALL Natives::CreateDynamicObject(AMX *amx, cell *params)
 {
-	CHECK_PARAMS(14);
+	CHECK_PARAMS(15);
 	if (core->getData()->getGlobalMaxItems(STREAMER_TYPE_OBJECT) == core->getData()->objects.size())
 	{
 		return INVALID_STREAMER_ID;
@@ -33,6 +33,7 @@ cell AMX_NATIVE_CALL Natives::CreateDynamicObject(AMX *amx, cell *params)
 	object->objectId = objectId;
 	object->inverseAreaChecking = false;
 	object->noCameraCollision = false;
+	object->shootable = 0;
 	object->originalComparableStreamDistance = -1.0f;
 	object->positionOffset = Eigen::Vector3f::Zero();
 	object->streamCallbacks = false;
@@ -49,6 +50,13 @@ cell AMX_NATIVE_CALL Natives::CreateDynamicObject(AMX *amx, cell *params)
 	object->priority = static_cast<int>(params[14]);
 	core->getGrid()->addObject(object);
 	core->getData()->objects.insert(std::make_pair(objectId, object));
+
+	// force create for players
+	if (static_cast<int>(params[15]) >= 1)
+	{
+		core->getStreamer()->createObjectForPlayers(object);
+	}
+
 	return static_cast<cell>(objectId);
 }
 
@@ -202,6 +210,30 @@ cell AMX_NATIVE_CALL Natives::SetDynamicObjectNoCameraCol(AMX *amx, cell *params
 			std::unordered_map<int, int>::iterator i = p->second.internalObjects.find(o->first);
 			if (i != p->second.internalObjects.end())
 			{
+				sampgdk::SetPlayerObjectNoCameraCol(p->first, i->second);
+			}
+		}
+		return 1;
+	}
+	return 0;
+}
+
+cell AMX_NATIVE_CALL Natives::ToggleDynamicObjectShootable(AMX *amx, cell *params)
+{
+	CHECK_PARAMS(2);
+	std::unordered_map<int, Item::SharedObject>::iterator o = core->getData()->objects.find(static_cast<int>(params[1]));
+	if (o != core->getData()->objects.end())
+	{
+		o->second->shootable = static_cast<int>(params[2]);
+
+		for (std::unordered_map<int, Player>::iterator p = core->getData()->players.begin(); p != core->getData()->players.end(); ++p)
+		{
+			std::unordered_map<int, int>::iterator i = p->second.internalObjects.find(o->first);
+
+			if (i != p->second.internalObjects.end())
+			{
+				p->second.playerObjectShootable[i->second] = static_cast<int>(params[2]);
+				
 				sampgdk::SetPlayerObjectNoCameraCol(p->first, i->second);
 			}
 		}
@@ -550,6 +582,8 @@ cell AMX_NATIVE_CALL Natives::EditDynamicObject(AMX *amx, cell *params)
 		}
 		if (internalId != INVALID_OBJECT_ID)
 		{
+			p->second.selectObject = static_cast<int>(params[2]);
+
 			sampgdk::EditPlayerObject(p->first, internalId);
 			return 1;
 		}
@@ -592,6 +626,7 @@ cell AMX_NATIVE_CALL Natives::RemoveDynamicObjectMaterial(AMX *amx, cell *params
 				std::unordered_map<int, int>::iterator i = p->second.internalObjects.find(o->first);
 				if (i != p->second.internalObjects.end())
 				{
+					p->second.playerObjectsIndex[i->second] = 0;
 					sampgdk::DestroyPlayerObject(p->first, i->second);
 					p->second.internalObjects.erase(i);
 					core->getStreamer()->startManualUpdate(p->second, STREAMER_TYPE_OBJECT);
@@ -686,6 +721,7 @@ cell AMX_NATIVE_CALL Natives::RemoveDynamicObjectMaterialText(AMX *amx, cell *pa
 				std::unordered_map<int, int>::iterator i = p->second.internalObjects.find(o->first);
 				if (i != p->second.internalObjects.end())
 				{
+					p->second.playerObjectsIndex[i->second] = 0;
 					sampgdk::DestroyPlayerObject(p->first, i->second);
 					p->second.internalObjects.erase(i);
 					core->getStreamer()->startManualUpdate(p->second, STREAMER_TYPE_OBJECT);

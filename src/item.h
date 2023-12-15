@@ -196,6 +196,7 @@ namespace Item
 		Eigen::Vector3f positionOffset;
 		int priority;
 		int references;
+		int shootable;
 		Eigen::Vector3f rotation;
 		bool streamCallbacks;
 		float streamDistance;

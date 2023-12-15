@@ -60,6 +60,7 @@ namespace Natives
 	cell AMX_NATIVE_CALL Streamer_ToggleErrorCallback(AMX *amx, cell *params);
 	cell AMX_NATIVE_CALL Streamer_IsToggleErrorCallback(AMX *amx, cell *params);
 	cell AMX_NATIVE_CALL Streamer_AmxUnloadDestroyItems(AMX *amx, cell *params);
+	cell AMX_NATIVE_CALL Streamer_ToggleShotObjects(AMX *amx, cell *params);
 	// Updates
 	cell AMX_NATIVE_CALL Streamer_ProcessActiveItems(AMX *amx, cell *params);
 	cell AMX_NATIVE_CALL Streamer_ToggleIdleUpdate(AMX *amx, cell *params);
@@ -130,6 +131,7 @@ namespace Natives
 	cell AMX_NATIVE_CALL GetDynamicObjectMaterialText(AMX *amx, cell *params);
 	cell AMX_NATIVE_CALL SetDynamicObjectMaterialText(AMX *amx, cell *params);
 	cell AMX_NATIVE_CALL GetPlayerCameraTargetDynObject(AMX *amx, cell *params);
+	cell AMX_NATIVE_CALL ToggleDynamicObjectShootable(AMX *amx, cell *params);
 	// Pickups
 	cell AMX_NATIVE_CALL CreateDynamicPickup(AMX *amx, cell *params);
 	cell AMX_NATIVE_CALL DestroyDynamicPickup(AMX *amx, cell *params);

@@ -1,4 +1,8 @@
 /*
+cmake -A Win32 ..
+cmake --build . --config Release
+*/
+/*
  * Copyright (C) 2017 Incognito
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,14 +36,15 @@ PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData)
 	core.reset(new Core);
 	pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
 	bool load = sampgdk::Load(ppData);
-	sampgdk::logprintf("\n\n*** Streamer Plugin v%s by Incognito loaded ***\n", PLUGIN_VERSION);
+	sampgdk::logprintf("\n\n*** Streamer Plugin v%s by Incognito and Dimmy loaded ***\n", PLUGIN_VERSION);
+
 	return load;
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload()
 {
 	core.reset();
-	sampgdk::logprintf("\n\n*** Streamer Plugin v%s by Incognito unloaded ***\n", PLUGIN_VERSION);
+	sampgdk::logprintf("\n\n*** Streamer Plugin v%s by Incognito and Dimmy unloaded ***\n", PLUGIN_VERSION);
 	sampgdk::Unload();
 }
 
@@ -77,6 +82,7 @@ AMX_NATIVE_INFO natives[] =
 	{ "Streamer_ToggleErrorCallback", Natives::Streamer_ToggleErrorCallback },
 	{ "Streamer_IsToggleErrorCallback", Natives::Streamer_IsToggleErrorCallback },
 	{ "Streamer_AmxUnloadDestroyItems", Natives::Streamer_AmxUnloadDestroyItems },
+	{ "Streamer_ToggleShotObjects", Natives::Streamer_ToggleShotObjects },
 	// Updates
 	{ "Streamer_ProcessActiveItems", Natives::Streamer_ProcessActiveItems },
 	{ "Streamer_ToggleIdleUpdate", Natives::Streamer_ToggleIdleUpdate },
@@ -148,6 +154,7 @@ AMX_NATIVE_INFO natives[] =
 	{ "GetDynamicObjectMaterialText", Natives::GetDynamicObjectMaterialText },
 	{ "SetDynamicObjectMaterialText", Natives::SetDynamicObjectMaterialText },
 	{ "GetPlayerCameraTargetDynObject", Natives::GetPlayerCameraTargetDynObject },
+	{ "ToggleDynamicObjectShootable", Natives::ToggleDynamicObjectShootable },
 	// Pickups
 	{ "CreateDynamicPickup", Natives::CreateDynamicPickup },
 	{ "DestroyDynamicPickup", Natives::DestroyDynamicPickup },

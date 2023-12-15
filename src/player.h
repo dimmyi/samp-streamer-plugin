@@ -30,12 +30,15 @@ struct Player
 	std::size_t chunkTickRate[STREAMER_MAX_TYPES];
 	std::size_t currentVisibleObjects;
 	std::size_t currentVisibleTextLabels;
+	int playerObjectsIndex[MAX_OBJECTS];
+	int playerObjectShootable[MAX_OBJECTS];
 	int delayedCheckpoint;
 	int delayedRaceCheckpoint;
 	bool delayedUpdate;
 	bool delayedUpdateFreeze;
 	std::chrono::steady_clock::time_point delayedUpdateTime;
 	int delayedUpdateType;
+	int selectObject;
 	int interiorId;
 	std::size_t maxVisibleMapIcons;
 	std::size_t maxVisibleObjects;
@@ -49,6 +52,7 @@ struct Player
 	std::size_t tickRate;
 	bool updateUsingCameraPosition;
 	bool updateWhenIdle;
+	int shotObjects;
 	SharedCell visibleCell;
 	int visibleCheckpoint;
 	int visibleRaceCheckpoint;

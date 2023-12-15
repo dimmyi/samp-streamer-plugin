@@ -61,6 +61,18 @@ cell AMX_NATIVE_CALL Natives::Streamer_ToggleChunkStream(AMX *amx, cell *params)
 	return 1;
 }
 
+cell AMX_NATIVE_CALL Natives::Streamer_ToggleShotObjects(AMX *amx, cell *params)
+{
+	CHECK_PARAMS(2);
+	std::unordered_map<int, Player>::iterator p = core->getData()->players.find(static_cast<int>(params[1]));
+	if (p != core->getData()->players.end())
+	{
+		p->second.shotObjects = static_cast<int>(params[2]) != 0;
+		return 1;
+	}
+	return 0;
+}
+
 cell AMX_NATIVE_CALL Natives::Streamer_IsToggleChunkStream(AMX *amx, cell *params)
 {
 	return static_cast<cell>(core->getChunkStreamer()->getChunkStreamingEnabled());

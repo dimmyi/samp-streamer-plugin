@@ -200,6 +200,7 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerEditObject(int playerid, bool playerobjec
 								o->second->originalComparableStreamDistance = -1.0f;
 							}
 						}
+						p->second.selectObject = 0;
 					}
 					for (std::set<AMX*>::iterator a = core->getData()->interfaces.begin(); a != core->getData()->interfaces.end(); ++a)
 					{
@@ -278,37 +279,38 @@ PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerWeaponShot(int playerid, int weaponid, in
 		std::unordered_map<int, Player>::iterator p = core->getData()->players.find(playerid);
 		if (p != core->getData()->players.end())
 		{
-			for (std::unordered_map<int, int>::iterator i = p->second.internalObjects.begin(); i != p->second.internalObjects.end(); ++i)
+			if (!p->second.shotObjects || hitid < 0 || hitid >= MAX_OBJECTS)
+				return retVal;
+
+			int internalObjectId = p->second.playerObjectsIndex[hitid];
+
+			if (internalObjectId != 0 && p->second.playerObjectShootable[hitid])
 			{
-				if (i->second == hitid)
+				for (std::set<AMX*>::iterator a = core->getData()->interfaces.begin(); a != core->getData()->interfaces.end(); ++a)
 				{
-					int objectid = i->first;
-					for (std::set<AMX*>::iterator a = core->getData()->interfaces.begin(); a != core->getData()->interfaces.end(); ++a)
+					int amxIndex = 0;
+					cell amxRetVal = 0;
+					if (!amx_FindPublic(*a, "OnPlayerShootDynamicObject", &amxIndex))
 					{
-						int amxIndex = 0;
-						cell amxRetVal = 0;
-						if (!amx_FindPublic(*a, "OnPlayerShootDynamicObject", &amxIndex))
+						amx_Push(*a, amx_ftoc(z));
+						amx_Push(*a, amx_ftoc(y));
+						amx_Push(*a, amx_ftoc(x));
+						amx_Push(*a, static_cast<cell>(internalObjectId));
+						amx_Push(*a, static_cast<cell>(weaponid));
+						amx_Push(*a, static_cast<cell>(playerid));
+						amx_Exec(*a, &amxRetVal, amxIndex);
+						if (!amxRetVal)
 						{
-							amx_Push(*a, amx_ftoc(z));
-							amx_Push(*a, amx_ftoc(y));
-							amx_Push(*a, amx_ftoc(x));
-							amx_Push(*a, static_cast<cell>(objectid));
-							amx_Push(*a, static_cast<cell>(weaponid));
-							amx_Push(*a, static_cast<cell>(playerid));
-							amx_Exec(*a, &amxRetVal, amxIndex);
-							if (!amxRetVal)
-							{
-								retVal = false;
-							}
+							retVal = false;
 						}
 					}
-					break;
 				}
 			}
 		}
 	}
 	return retVal;
 }
+
 
 PLUGIN_EXPORT bool PLUGIN_CALL OnPlayerGiveDamageActor(int playerid, int actorid, float amount, int weaponid, int bodypart)
 {

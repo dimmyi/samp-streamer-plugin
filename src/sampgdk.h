@@ -42,7 +42,11 @@
 #ifndef SAMPGDK_PLATFORM_H
 #define SAMPGDK_PLATFORM_H
 
+/*
 #if !defined _M_IX86 && !defined __i386__ && !defined RC_INVOKED
+  #error Unsupported architecture
+#endif*/
+#if !defined _M_IX86 && !defined __i386__ && !defined _M_X64 && !defined __x86_64__ && !defined RC_INVOKED
   #error Unsupported architecture
 #endif
 

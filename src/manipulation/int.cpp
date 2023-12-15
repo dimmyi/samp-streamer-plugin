@@ -1109,8 +1109,10 @@ int Manipulation::setIntData(AMX *amx, cell *params)
 						std::unordered_map<int, int>::iterator i = p->second.internalObjects.find(o->first);
 						if (i != p->second.internalObjects.end())
 						{
+							p->second.playerObjectsIndex[i->second] = 0;
 							sampgdk::DestroyPlayerObject(p->first, i->second);
 							i->second = sampgdk::CreatePlayerObject(p->first, o->second->modelId, o->second->position[0], o->second->position[1], o->second->position[2], o->second->rotation[0], o->second->rotation[1], o->second->rotation[2], o->second->drawDistance);
+							p->second.playerObjectsIndex[i->second] = o->second->objectId;
 							if (o->second->attach)
 							{
 								if (o->second->attach->object != INVALID_STREAMER_ID)

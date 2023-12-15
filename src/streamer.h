@@ -46,9 +46,9 @@ public:
 		}
 		return false;
 	}
-
 	void startAutomaticUpdate();
 	void startManualUpdate(Player &player, int type);
+	void createObjectForPlayers(const Item::SharedObject &object);
 	
 	bool processPlayerArea(Player &player, const Item::SharedArea &a, const int state);
 
@@ -58,6 +58,8 @@ public:
 	std::unordered_set<Item::SharedObject> attachedObjects;
 	std::unordered_set<Item::SharedTextLabel> attachedTextLabels;
 	std::unordered_set<Item::SharedObject> movingObjects;
+
+	int eServerTickRate;
 private:
 	void calculateAverageElapsedTime();
 

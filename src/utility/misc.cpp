@@ -122,7 +122,14 @@ std::unordered_map<int, Item::SharedObject>::iterator Utility::destroyObject(std
 		std::unordered_map<int, int>::iterator i = p->second.internalObjects.find(o->first);
 		if (i != p->second.internalObjects.end())
 		{
+			if (p->second.selectObject == o->first)
+			{
+				sampgdk::CancelEdit(p->first);
+
+				p->second.selectObject = 0;
+			}
 			sampgdk::DestroyPlayerObject(p->first, i->second);
+			p->second.playerObjectsIndex[i->second] = 0;
 			p->second.internalObjects.erase(i);
 		}
 		std::unordered_set<int>::iterator r = p->second.removedObjects.find(o->first);
