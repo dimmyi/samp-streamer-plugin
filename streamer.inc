@@ -116,7 +116,7 @@
 
 // Include File Version
 
-public Streamer_IncludeFileVersion = 0x296;
+public Streamer_IncludeFileVersion = 0x300;
 
 #pragma unused Streamer_IncludeFileVersion
 
@@ -213,6 +213,7 @@ native Streamer_IsToggleItemCallbacks(type, STREAMER_ALL_TAGS:id);
 native Streamer_ToggleErrorCallback(toggle);
 native Streamer_IsToggleErrorCallback();
 native Streamer_AmxUnloadDestroyItems(toggle);
+native Streamer_ToggleShotObjects(playerid, toggle);
 
 // Natives (Updates)
 
@@ -266,7 +267,7 @@ native Streamer_SetItemOffset(type, STREAMER_ALL_TAGS:id, Float:x, Float:y, Floa
 
 // Natives (Objects)
 
-native STREAMER_TAG_OBJECT:CreateDynamicObject(modelid, Float:x, Float:y, Float:z, Float:rx, Float:ry, Float:rz, worldid = -1, interiorid = -1, playerid = -1, Float:streamdistance = STREAMER_OBJECT_SD, Float:drawdistance = STREAMER_OBJECT_DD, STREAMER_TAG_AREA:areaid = STREAMER_TAG_AREA:-1, priority = 0);
+native STREAMER_TAG_OBJECT:CreateDynamicObject(modelid, Float:x, Float:y, Float:z, Float:rx, Float:ry, Float:rz, worldid = -1, interiorid = -1, playerid = -1, Float:streamdistance = STREAMER_OBJECT_SD, Float:drawdistance = STREAMER_OBJECT_DD, STREAMER_TAG_AREA:areaid = STREAMER_TAG_AREA:-1, priority = 0, forcecreate = 0);
 native DestroyDynamicObject(STREAMER_TAG_OBJECT:objectid);
 native IsValidDynamicObject(STREAMER_TAG_OBJECT:objectid);
 native GetDynamicObjectPos(STREAMER_TAG_OBJECT:objectid, &Float:x, &Float:y, &Float:z);
@@ -292,6 +293,7 @@ native RemoveDynamicObjectMaterialText(STREAMER_TAG_OBJECT:objectid, materialind
 native GetDynamicObjectMaterialText(STREAMER_TAG_OBJECT:objectid, materialindex, text[], &materialsize, fontface[], &fontsize, &bold, &fontcolor, &backcolor, &textalignment, maxtext = sizeof text, maxfontface = sizeof fontface);
 native SetDynamicObjectMaterialText(STREAMER_TAG_OBJECT:objectid, materialindex, const text[], materialsize = OBJECT_MATERIAL_SIZE_256x128, const fontface[] = "Arial", fontsize = 24, bold = 1, fontcolor = 0xFFFFFFFF, backcolor = 0, textalignment = 0);
 native STREAMER_TAG_OBJECT:GetPlayerCameraTargetDynObject(playerid);
+native ToggleDynamicObjectShootable(objectid, toggle);
 
 // Natives (Pickups)
 
