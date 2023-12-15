@@ -229,7 +229,7 @@ void Streamer::performPlayerUpdate(Player &player, bool automatic)
 				}
 				case STREAMER_TYPE_ACTOR:
 				{
-					if (automatic && !core->getData()->pickups.empty() && (player.enabledItems[STREAMER_TYPE_ACTOR]))
+					if (automatic && !core->getData()->actors.empty() && (player.enabledItems[STREAMER_TYPE_ACTOR]))
 					{
 						discoverActors(player, cells);
 					}
